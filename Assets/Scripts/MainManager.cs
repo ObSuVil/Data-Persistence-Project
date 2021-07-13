@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using TMPro;
 public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -36,6 +37,9 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        UpdateHighScoreText();
+
     }
 
     private void Update()
@@ -68,9 +72,22 @@ public class MainManager : MonoBehaviour
         ScoreText.text = $"Score : {m_Points}";
     }
 
+    void UpdateHighScoreText()
+    {
+        HighScoreText.text = "Champ: " + PersistenceManager.Instance.savedHighScoreName + ", Score: " + PersistenceManager.Instance.savedHighScore;
+    }
+        
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        if(m_Points > PersistenceManager.Instance.savedHighScore)
+        {
+
+            PersistenceManager.Instance.SaveHighScore(m_Points);
+            UpdateHighScoreText();
+            HighScoreText.text = HighScoreText.text + " NEW!";
+        }
     }
 }
