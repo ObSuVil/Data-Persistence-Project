@@ -12,7 +12,10 @@ public class PersistenceManager : MonoBehaviour
     public int savedHighScore;
     public string cName;
     public int score;
-    public TextMeshProUGUI nameBox;
+   
+
+    public float maxBallSpeed;
+    public float custPaddleSpeed;
 
     private void Awake()
     {
@@ -25,17 +28,10 @@ public class PersistenceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
       LoadHighScore();
-        GameObject.Find("HighScoreText").GetComponent<TextMeshProUGUI>().text = "Reigning Champion: " + savedHighScoreName + "\n Score: " + savedHighScore;
-
+      LoadSettings();
     }
 
-    public void StartGame()
-    {
-        score = 0;
-        cName = nameBox.text;
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
-        
-    }
+
 
     [System.Serializable]
     class SaveData
@@ -43,6 +39,35 @@ public class PersistenceManager : MonoBehaviour
         public string playerName;
         public int highScore;
     }    
+
+    class SettingsData
+    {
+        public float pSpeed;
+        public float mBSpeed;
+    }
+
+    public void SaveSettings()
+    {
+        SettingsData data = new SettingsData();
+        //data.pSpeed = valueinthetextbox;
+        //data.mBSpeed = valueinotherbox;
+
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/gamesettings.json", json);
+    }
+
+    public void LoadSettings()
+    {
+        string path = Application.persistentDataPath + "/gamesettings.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SettingsData data = JsonUtility.FromJson<SettingsData>(json);
+
+            
+        }
+    }
 
     public void SaveHighScore(int newScore)
     {
