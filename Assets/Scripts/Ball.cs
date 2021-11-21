@@ -31,6 +31,7 @@ public class Ball : MonoBehaviour
             velocity = velocity.normalized * 3.0f;
         }
 
+        velocity *= 1 + (PersistenceManager.Instance.custBallSpeed / 100);
         m_Rigidbody.velocity = velocity;
     }
 }

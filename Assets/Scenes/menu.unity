@@ -733,6 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nameBox: {fileID: 270603692}
+  scoreBox: {fileID: 2109302660}
 --- !u!4 &435163576
 Transform:
   m_ObjectHideFlags: 0
@@ -930,8 +931,8 @@ MonoBehaviour:
   savedHighScore: 0
   cName: 
   score: 0
-  maxBallSpeed: 0
-  custPaddleSpeed: 0
+  custBallSpeed: 50
+  custPaddleSpeed: 50
 --- !u!1 &777385072
 GameObject:
   m_ObjectHideFlags: 0

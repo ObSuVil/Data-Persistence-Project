@@ -14,7 +14,7 @@ public class PersistenceManager : MonoBehaviour
     public int score;
    
 
-    public float maxBallSpeed;
+    public float custBallSpeed;
     public float custPaddleSpeed;
 
     private void Awake()
@@ -29,6 +29,7 @@ public class PersistenceManager : MonoBehaviour
 
       LoadHighScore();
       LoadSettings();
+
     }
 
 
@@ -43,14 +44,14 @@ public class PersistenceManager : MonoBehaviour
     class SettingsData
     {
         public float pSpeed;
-        public float mBSpeed;
+        public float bSpeed;
     }
 
     public void SaveSettings()
     {
         SettingsData data = new SettingsData();
-        //data.pSpeed = valueinthetextbox;
-        //data.mBSpeed = valueinotherbox;
+        data.pSpeed = custPaddleSpeed;
+        data.bSpeed = custBallSpeed;
 
         string json = JsonUtility.ToJson(data);
 
@@ -65,6 +66,8 @@ public class PersistenceManager : MonoBehaviour
             string json = File.ReadAllText(path);
             SettingsData data = JsonUtility.FromJson<SettingsData>(json);
 
+            custPaddleSpeed = data.pSpeed;
+            custBallSpeed = data.bSpeed;
             
         }
     }

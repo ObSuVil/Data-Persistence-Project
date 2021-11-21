@@ -7,20 +7,73 @@ using TMPro;
 public class SettingsManager : MonoBehaviour
 {
     public TextMeshProUGUI highScoreText;
-    public TMP_InputField paddleSpeedBox;
-    public TMP_InputField ballSpeedBox;
+    public TextMeshProUGUI paddleSpeedBox;
+    public TextMeshProUGUI ballSpeedBox;
+
 
     public void Awake()
     {
+
+    }
+
+    private void Start()
+    {
         if (PersistenceManager.Instance.savedHighScoreName == "")
         {
-            highScoreText.text = ""+PersistenceManager.Instance.savedHighScore;
+            highScoreText.text = "" + PersistenceManager.Instance.savedHighScore;
         }
         else
         {
             highScoreText.text = PersistenceManager.Instance.savedHighScore + ", by " + PersistenceManager.Instance.savedHighScoreName;
-        }//call persist man load, fill boxes
+        }
+
+       updateCustBoxTexts();
+
     }
+
+    void updateCustBoxTexts()
+    {
+        paddleSpeedBox.text = "" + PersistenceManager.Instance.custPaddleSpeed;
+        ballSpeedBox.text = "" + PersistenceManager.Instance.custBallSpeed;
+        highScoreText.text = "Champ: " + PersistenceManager.Instance.savedHighScoreName + ", Score: " + PersistenceManager.Instance.savedHighScore;
+    }
+    
+    public void IncreasePSpeed()
+    {
+        PersistenceManager.Instance.custPaddleSpeed += 10;
+        updateCustBoxTexts();
+    }
+
+    public void DecreasePSpeed()
+    {
+        PersistenceManager.Instance.custPaddleSpeed -= 10;
+        updateCustBoxTexts();
+    }
+    public void DefaultPSpeed()
+    {
+        PersistenceManager.Instance.custPaddleSpeed = 0;
+        updateCustBoxTexts();
+    }
+
+
+
+    public void IncreaseBSpeed()
+    {
+        PersistenceManager.Instance.custBallSpeed += 10;
+        updateCustBoxTexts();
+    }
+
+    public void DecreaseBSpeed()
+    {
+        PersistenceManager.Instance.custBallSpeed -= 10;
+        updateCustBoxTexts();
+    }
+    public void DefaultBSpeed()
+    {
+        PersistenceManager.Instance.custBallSpeed = 0;
+        updateCustBoxTexts();
+    }
+
     public void ReturnToTitleScreen()
     {
         SceneManager.LoadScene(0, LoadSceneMode.Single);
@@ -28,7 +81,7 @@ public class SettingsManager : MonoBehaviour
 
     public void SaveSettings()
     {
-        //persist man save
+        PersistenceManager.Instance.SaveSettings();
     }
 
     public void ResetHighScore()
@@ -36,7 +89,7 @@ public class SettingsManager : MonoBehaviour
         PersistenceManager.Instance.cName = "ObSuVil";
         PersistenceManager.Instance.SaveHighScore(0);
         PersistenceManager.Instance.LoadHighScore();
-        Awake();
+        updateCustBoxTexts();
 
     }
 }
